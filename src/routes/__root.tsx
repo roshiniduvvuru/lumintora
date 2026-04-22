@@ -31,6 +31,14 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Lumintora" },
       { name: "description", content: "Learning that adapts to you. AI-native learning paths that evolve with your goals." },
+      { property: "og:title", content: "Lumintora" },
+      { name: "twitter:title", content: "Lumintora" },
+      { property: "og:description", content: "Learning that adapts to you. AI-native learning paths that evolve with your goals." },
+      { name: "twitter:description", content: "Learning that adapts to you. AI-native learning paths that evolve with your goals." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/787f0fed-0123-4551-a8f8-a84540447297" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/787f0fed-0123-4551-a8f8-a84540447297" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       {
