@@ -38,7 +38,7 @@ export function AbstractFlow() {
     { id: "dl",  label: "Deep Learning",  x: 445, y: 175, r: 14, mastery: 0.38, tier: "frontier", active: true },
     { id: "evl", label: "Evaluation",     x: 445, y: 305, r: 12, mastery: 0.46, tier: "applied" },
     { id: "goal",label: "Goal · LLM Eng", x: 555, y: 240, r: 18, mastery: 0.0,  tier: "goal" },
-  ] as const;
+  ];
 
   const edges: Edge[] = [
     { from: "fnd", to: "lin", w: 0.95 },
@@ -54,7 +54,7 @@ export function AbstractFlow() {
     { from: "ml", to: "dl", w: 0.5 },
     { from: "dl", to: "goal", w: 0.95, hot: true },
     { from: "evl", to: "goal", w: 0.6 },
-  ] as const;
+  ];
 
   const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
 
@@ -338,7 +338,7 @@ export function AbstractFlow() {
                       fontSize="8"
                       fill="oklch(0.5 0.02 270 / 0.8)"
                       letterSpacing="0.08em"
-                      fontVariantNumeric="tabular-nums"
+                      style={{ fontVariantNumeric: "tabular-nums" }}
                     >
                       {Math.round(n.mastery * 100)}%
                     </text>
@@ -371,7 +371,7 @@ export function AbstractFlow() {
             ].map((r, i) => (
               <g key={i} transform={`translate(0 ${18 + i * 22})`}>
                 <text x="0" y="10" fontSize="10" fill="oklch(0.25 0.02 270)" fontWeight="500">{r.t}</text>
-                <text x="92" y="10" textAnchor="end" fontSize="9" fill="oklch(0.5 0.02 270)" fontVariantNumeric="tabular-nums">{r.m}</text>
+                <text x="92" y="10" textAnchor="end" fontSize="9" fill="oklch(0.5 0.02 270)" style={{ fontVariantNumeric: "tabular-nums" }}>{r.m}</text>
                 <line x1="0" y1="16" x2="92" y2="16" stroke="oklch(0.6 0.04 270 / 0.14)" />
               </g>
             ))}
@@ -390,7 +390,7 @@ export function AbstractFlow() {
               {/* end dot */}
               <circle cx="152" cy={(44 - spark[spark.length - 1] * 32).toFixed(1)} r="2.5" fill="oklch(0.7 0.16 230)" />
               {/* numeric */}
-              <text x="12" y="60" fontSize="14" fontWeight="600" fill="oklch(0.2 0.02 270)" fontVariantNumeric="tabular-nums">66%</text>
+              <text x="12" y="60" fontSize="14" fontWeight="600" fill="oklch(0.2 0.02 270)" style={{ fontVariantNumeric: "tabular-nums" }}>66%</text>
               <text x="44" y="60" fontSize="9" fill="oklch(0.5 0.05 150)" letterSpacing="0.04em">▲ 5pt</text>
             </g>
           </g>
