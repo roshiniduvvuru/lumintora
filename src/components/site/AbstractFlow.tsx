@@ -40,7 +40,7 @@ export function AbstractFlow() {
     { id: "goal",label: "Goal · LLM Eng", x: 555, y: 240, r: 18, mastery: 0.0,  tier: "goal" },
   ] as const;
 
-  const edges = [
+  const edges: Edge[] = [
     { from: "fnd", to: "lin", w: 0.95 },
     { from: "fnd", to: "prb", w: 0.95 },
     { from: "lin", to: "opt", w: 0.7 },
