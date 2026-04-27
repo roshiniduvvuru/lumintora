@@ -67,30 +67,54 @@ export function AbstractFlow() {
           <rect width="640" height="500" fill="url(#dots)" />
         </g>
 
-        {/* ── Connecting line through the three steps ─────────────── */}
-        <path
-          d="M 130 250 C 220 250, 260 250, 320 250 S 420 250, 510 250"
-          stroke="url(#line)"
-          strokeWidth="2"
-          strokeLinecap="round"
-          fill="none"
-          opacity="0.85"
-        />
+        {/* ── Connectors between the three steps ───────────────────────
+            Two segments drawn between circle edges so the connection
+            is clearly visible (not hidden behind the circles).
+            Left segment:  YOU (r=56)  →  CORE (r=78 outer ring)
+            Right segment: CORE        →  PATH (r=56)
+        */}
+        <g>
+          {/* Left connector: from x=186 (130+56) to x=242 (320-78) */}
+          <line
+            x1="186" y1="250" x2="240" y2="250"
+            stroke="url(#line)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+          {/* Arrowhead pointing into the core */}
+          <path
+            d="M 240 250 L 232 245 L 234 250 L 232 255 Z"
+            fill="oklch(0.65 0.22 270)"
+          />
 
-        {/* Two travelling pulses showing flow */}
-        <circle r="4" fill="oklch(0.78 0.18 290)" filter="url(#glow)">
+          {/* Right connector: from x=398 (320+78) to x=454 (510-56) */}
+          <line
+            x1="400" y1="250" x2="454" y2="250"
+            stroke="url(#line)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+          {/* Arrowhead pointing into the path */}
+          <path
+            d="M 454 250 L 446 245 L 448 250 L 446 255 Z"
+            fill="oklch(0.6 0.18 220)"
+          />
+        </g>
+
+        {/* Travelling pulses — one along each connector */}
+        <circle r="3.5" fill="oklch(0.78 0.18 290)" filter="url(#glow)">
           <animateMotion
-            dur="4s"
+            dur="2s"
             repeatCount="indefinite"
-            path="M 130 250 C 220 250, 260 250, 320 250 S 420 250, 510 250"
+            path="M 186 250 L 240 250"
           />
         </circle>
-        <circle r="3" fill="oklch(0.78 0.18 290)" opacity="0.55">
+        <circle r="3.5" fill="oklch(0.7 0.18 240)" filter="url(#glow)">
           <animateMotion
-            dur="4s"
-            begin="1.5s"
+            dur="2s"
+            begin="1s"
             repeatCount="indefinite"
-            path="M 130 250 C 220 250, 260 250, 320 250 S 420 250, 510 250"
+            path="M 400 250 L 454 250"
           />
         </circle>
 
