@@ -13,9 +13,22 @@
 // and visually consistent with the design system tokens.
 
 export function AbstractFlow() {
+  type Tier = "core" | "applied" | "frontier" | "goal";
+  type Node = {
+    id: string;
+    label: string;
+    x: number;
+    y: number;
+    r: number;
+    mastery: number;
+    tier: Tier;
+    active?: boolean;
+  };
+  type Edge = { from: string; to: string; w: number; hot?: boolean };
+
   // Concept graph — positions are deliberate (foundations on the left,
   // applied skills on the right). Mastery is 0..1.
-  const nodes = [
+  const nodes: Node[] = [
     { id: "fnd", label: "Foundations",   x: 110, y: 235, r: 16, mastery: 1.0,  tier: "core" },
     { id: "lin", label: "Linear Algebra", x: 205, y: 150, r: 14, mastery: 0.92, tier: "core" },
     { id: "prb", label: "Probability",    x: 205, y: 320, r: 14, mastery: 0.78, tier: "core" },
