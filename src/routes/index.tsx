@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { AbstractFlow } from "@/components/site/AbstractFlow";
+import { FeatureMatrix } from "@/components/site/FeatureMatrix";
 import { WaitlistForm } from "@/components/site/WaitlistForm";
 import { Logo } from "@/components/Logo";
 
