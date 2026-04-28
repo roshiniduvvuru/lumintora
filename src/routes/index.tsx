@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Nav } from "@/components/site/Nav";
 import { AbstractFlow } from "@/components/site/AbstractFlow";
+import { FeatureMatrix } from "@/components/site/FeatureMatrix";
 import { WaitlistForm } from "@/components/site/WaitlistForm";
 import { Logo } from "@/components/Logo";
 
@@ -178,6 +179,9 @@ function Index() {
             </ol>
           </div>
         </section>
+
+        {/* FEATURE MATRIX — V1 and V1 Premium */}
+        <FeatureMatrix />
 
         {/* CONTEXTUAL USE */}
         <section className="border-t border-hairline bg-subtle/60">
