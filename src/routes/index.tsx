@@ -180,6 +180,9 @@ function Index() {
           </div>
         </section>
 
+        {/* FEATURE MATRIX — V1 and V1 Premium */}
+        <FeatureMatrix />
+
         {/* CONTEXTUAL USE */}
         <section className="border-t border-hairline bg-subtle/60">
           <div className="mx-auto max-w-4xl px-6 py-24 sm:py-28">
