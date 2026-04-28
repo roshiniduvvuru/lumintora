@@ -1,11 +1,9 @@
-// Hero diagram — "How it works" in three quiet steps.
+// Hero diagram — "How it works" in three clear steps.
 //
-//   YOU              LUMINTORA               YOUR PATH
-//   ───              ─────────               ─────────
-//   Goal      →      Adapts in real time  →  Next best lesson
+//   YOU  ──(your goal)──▶  LUMINTORA  ──(your path)──▶  RESULT
 //
-// Designed to be instantly readable by anyone — no jargon, no fake
-// dashboards. Pure SVG, design-token colors only.
+// Designed to be instantly readable by anyone — clear arrows,
+// labeled connections, no jargon.
 
 export function AbstractFlow() {
   return (
@@ -32,11 +30,14 @@ export function AbstractFlow() {
           </radialGradient>
           <mask id="fadeMask"><rect width="640" height="500" fill="url(#fade)" /></mask>
 
-          {/* Connecting line gradient */}
-          <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%"  stopColor="oklch(0.65 0.22 280 / 0.9)" />
-            <stop offset="50%" stopColor="oklch(0.7 0.18 260 / 0.9)" />
-            <stop offset="100%" stopColor="oklch(0.7 0.16 200 / 0.9)" />
+          {/* Connecting line gradients */}
+          <linearGradient id="lineL" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"  stopColor="oklch(0.7 0.18 280 / 0.5)" />
+            <stop offset="100%" stopColor="oklch(0.6 0.22 275 / 1)" />
+          </linearGradient>
+          <linearGradient id="lineR" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%"  stopColor="oklch(0.6 0.22 260 / 1)" />
+            <stop offset="100%" stopColor="oklch(0.65 0.16 210 / 0.5)" />
           </linearGradient>
 
           {/* Center "brain" gradient */}
@@ -60,6 +61,16 @@ export function AbstractFlow() {
             <feGaussianBlur stdDeviation="4" result="b" />
             <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
           </filter>
+
+          {/* Arrow markers — clearly defined chevrons */}
+          <marker id="arrowL" viewBox="0 0 12 12" refX="10" refY="6"
+                  markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+            <path d="M 1 1 L 10 6 L 1 11 Z" fill="oklch(0.55 0.22 275)" />
+          </marker>
+          <marker id="arrowR" viewBox="0 0 12 12" refX="10" refY="6"
+                  markerWidth="10" markerHeight="10" orient="auto-start-reverse">
+            <path d="M 1 1 L 10 6 L 1 11 Z" fill="oklch(0.6 0.18 220)" />
+          </marker>
         </defs>
 
         {/* Backdrop */}
@@ -67,55 +78,77 @@ export function AbstractFlow() {
           <rect width="640" height="500" fill="url(#dots)" />
         </g>
 
-        {/* ── Connectors between the three steps ───────────────────────
-            Two segments drawn between circle edges so the connection
-            is clearly visible (not hidden behind the circles).
-            Left segment:  YOU (r=56)  →  CORE (r=78 outer ring)
-            Right segment: CORE        →  PATH (r=56)
+        {/* ── Connectors ─────────────────────────────────────────────
+            Clear, thick arrows with labels above them so there's no
+            ambiguity about direction or meaning.
+
+            Positions:
+              YOU circle:   cx=130, r=56  → right edge at x=186
+              CORE:         cx=320, r=58  → left edge x=262, right edge x=378
+              PATH circle:  cx=510, r=56  → left edge at x=454
         */}
         <g>
-          {/* Left connector: from x=186 (130+56) to x=242 (320-78) */}
+          {/* Left connector — YOUR GOAL */}
           <line
-            x1="186" y1="250" x2="240" y2="250"
-            stroke="url(#line)"
-            strokeWidth="2.5"
+            x1="190" y1="250" x2="258" y2="250"
+            stroke="url(#lineL)"
+            strokeWidth="2.75"
             strokeLinecap="round"
+            markerEnd="url(#arrowL)"
           />
-          {/* Arrowhead pointing into the core */}
-          <path
-            d="M 240 250 L 232 245 L 234 250 L 232 255 Z"
-            fill="oklch(0.65 0.22 270)"
-          />
+          {/* Label chip above */}
+          <g transform="translate(224 226)">
+            <rect
+              x="-36" y="-12" width="72" height="20" rx="10"
+              fill="oklch(0.99 0 0)"
+              stroke="oklch(0.6 0.04 270 / 0.3)"
+            />
+            <text
+              x="0" y="2"
+              textAnchor="middle"
+              fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
+              fontSize="10"
+              fontWeight="500"
+              fill="oklch(0.35 0.08 280)"
+            >
+              your goal
+            </text>
+          </g>
 
-          {/* Right connector: from x=398 (320+78) to x=454 (510-56) */}
+          {/* Right connector — YOUR PATH */}
           <line
-            x1="400" y1="250" x2="454" y2="250"
-            stroke="url(#line)"
-            strokeWidth="2.5"
+            x1="382" y1="250" x2="450" y2="250"
+            stroke="url(#lineR)"
+            strokeWidth="2.75"
             strokeLinecap="round"
+            markerEnd="url(#arrowR)"
           />
-          {/* Arrowhead pointing into the path */}
-          <path
-            d="M 454 250 L 446 245 L 448 250 L 446 255 Z"
-            fill="oklch(0.6 0.18 220)"
-          />
+          {/* Label chip above */}
+          <g transform="translate(416 226)">
+            <rect
+              x="-36" y="-12" width="72" height="20" rx="10"
+              fill="oklch(0.99 0 0)"
+              stroke="oklch(0.6 0.04 270 / 0.3)"
+            />
+            <text
+              x="0" y="2"
+              textAnchor="middle"
+              fontFamily="Inter, ui-sans-serif, system-ui, sans-serif"
+              fontSize="10"
+              fontWeight="500"
+              fill="oklch(0.3 0.1 220)"
+            >
+              your path
+            </text>
+          </g>
         </g>
 
         {/* Travelling pulses — one along each connector */}
         <circle r="3.5" fill="oklch(0.78 0.18 290)" filter="url(#glow)">
-          <animateMotion
-            dur="2s"
-            repeatCount="indefinite"
-            path="M 186 250 L 240 250"
-          />
+          <animateMotion dur="2.2s" repeatCount="indefinite" path="M 190 250 L 258 250" />
         </circle>
         <circle r="3.5" fill="oklch(0.7 0.18 240)" filter="url(#glow)">
-          <animateMotion
-            dur="2s"
-            begin="1s"
-            repeatCount="indefinite"
-            path="M 400 250 L 454 250"
-          />
+          <animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite" path="M 382 250 L 450 250" />
         </circle>
 
         {/* ── STEP 1 · YOU ─────────────────────────────────────────── */}
@@ -129,12 +162,11 @@ export function AbstractFlow() {
         </g>
         <g fontFamily="Inter, ui-sans-serif, system-ui, sans-serif" textAnchor="middle">
           <text x="130" y="340" fontSize="14" fontWeight="600" fill="oklch(0.2 0.02 270)">You</text>
-          <text x="130" y="360" fontSize="11" fill="oklch(0.45 0.02 270)">Tell us your goal</text>
+          <text x="130" y="360" fontSize="11" fill="oklch(0.45 0.02 270)">Tell us what you want to learn</text>
         </g>
 
         {/* ── STEP 2 · LUMINTORA (adaptive core) ───────────────────── */}
         <g>
-          {/* Outer ring */}
           <circle
             cx="320" cy="250" r="78"
             fill="none"
@@ -142,18 +174,14 @@ export function AbstractFlow() {
             strokeWidth="1"
             strokeDasharray="3 5"
           />
-          {/* Soft glow ring */}
           <circle cx="320" cy="250" r="68" fill="none" stroke="oklch(0.65 0.22 280 / 0.25)" strokeWidth="6" filter="url(#glow)" />
-          {/* Core */}
           <circle cx="320" cy="250" r="58" fill="url(#core)" filter="url(#glow)" />
-          {/* Inner highlight */}
           <circle cx="306" cy="234" r="12" fill="oklch(1 0 0 / 0.35)" />
-          {/* Subtle pulsing ring */}
           <circle cx="320" cy="250" r="58" fill="none" stroke="oklch(0.7 0.22 280 / 0.6)" strokeWidth="1.5" className="pulse-dot" />
         </g>
         <g fontFamily="Inter, ui-sans-serif, system-ui, sans-serif" textAnchor="middle">
           <text x="320" y="362" fontSize="14" fontWeight="600" fill="oklch(0.2 0.02 270)">Lumintora</text>
-          <text x="320" y="382" fontSize="11" fill="oklch(0.45 0.02 270)">Learns how you learn</text>
+          <text x="320" y="382" fontSize="11" fill="oklch(0.45 0.02 270)">Adapts to how you learn</text>
         </g>
 
         {/* ── STEP 3 · YOUR PATH ───────────────────────────────────── */}
@@ -171,7 +199,7 @@ export function AbstractFlow() {
         </g>
         <g fontFamily="Inter, ui-sans-serif, system-ui, sans-serif" textAnchor="middle">
           <text x="510" y="340" fontSize="14" fontWeight="600" fill="oklch(0.2 0.02 270)">Your path</text>
-          <text x="510" y="360" fontSize="11" fill="oklch(0.45 0.02 270)">One next step at a time</text>
+          <text x="510" y="360" fontSize="11" fill="oklch(0.45 0.02 270)">One clear step at a time</text>
         </g>
 
         {/* Quiet caption */}
@@ -183,7 +211,7 @@ export function AbstractFlow() {
           letterSpacing="0.22em"
           fill="oklch(0.5 0.02 270 / 0.7)"
         >
-          GOAL  →  ADAPTS  →  GUIDES
+          TELL IT  →  IT ADAPTS  →  YOU LEARN
         </text>
       </svg>
     </div>
