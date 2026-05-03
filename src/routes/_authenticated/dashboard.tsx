@@ -198,6 +198,10 @@ function Dashboard() {
         </header>
 
         <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-8 md:px-8">
+          {active !== "overview" && (
+            <SectionView id={active} name={name} onBack={() => setActive("overview")} />
+          )}
+          {active === "overview" && (<>
           {/* Greeting + ring */}
           <section className="grid gap-6 lg:grid-cols-3">
             <div className="lg:col-span-2 rounded-2xl border border-border bg-card p-6 shadow-soft md:p-8">
