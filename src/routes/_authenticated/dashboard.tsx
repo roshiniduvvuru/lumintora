@@ -299,6 +299,7 @@ function Dashboard() {
           <footer className="mt-12 border-t border-border/60 pt-6 text-xs text-muted-foreground">
             Static preview · Data shown is illustrative.
           </footer>
+          </>)}
         </main>
       </div>
     </div>
