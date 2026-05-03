@@ -441,3 +441,234 @@ function ProgressRing({ value, size = 128, stroke = 12 }: { value: number; size?
     </div>
   );
 }
+
+/* ---------- Section Views ---------- */
+
+type SectionData = {
+  eyebrow: string;
+  title: string;
+  subtitle: string;
+  Icon: React.ComponentType<{ className?: string }>;
+  stats: { label: string; value: string }[];
+  items: { title: string; meta: string; desc: string; progress?: number; tag?: string }[];
+  cta: string;
+};
+
+const SECTIONS: Record<string, SectionData> = {
+  path: {
+    eyebrow: "Adaptive plan",
+    title: "My Path",
+    subtitle: "Your personalized roadmap — recalibrated daily based on what you've mastered.",
+    Icon: RouteIcon,
+    stats: [
+      { label: "Modules", value: "24" },
+      { label: "Completed", value: "9" },
+      { label: "Est. time left", value: "38h" },
+    ],
+    items: [
+      { title: "Foundations of Algorithms", meta: "Module 01 · 6 lessons", desc: "Big-O, recursion, and the mental models that scale.", progress: 100, tag: "Done" },
+      { title: "Arrays & Hashing Mastery", meta: "Module 02 · 8 lessons", desc: "Pattern recognition for the most common interview shapes.", progress: 72, tag: "In progress" },
+      { title: "Two Pointers & Sliding Window", meta: "Module 03 · 5 lessons", desc: "Move from brute force to optimal in one pass.", progress: 35, tag: "In progress" },
+      { title: "Trees & Graph Traversals", meta: "Module 04 · 9 lessons", desc: "DFS, BFS, and when to reach for each.", progress: 0, tag: "Locked next" },
+      { title: "Dynamic Programming Intuition", meta: "Module 05 · 7 lessons", desc: "Build the recurrence, not the memorization.", progress: 0, tag: "Upcoming" },
+      { title: "System Design Primer", meta: "Module 06 · 6 lessons", desc: "Trade-offs that real engineers reason about.", progress: 0, tag: "Upcoming" },
+    ],
+    cta: "Resume next lesson",
+  },
+  practice: {
+    eyebrow: "Hands-on",
+    title: "Practice",
+    subtitle: "Run, iterate, and learn by doing — every concept is a runnable problem.",
+    Icon: Code2,
+    stats: [
+      { label: "Solved", value: "127" },
+      { label: "Streak", value: "12d" },
+      { label: "Acceptance", value: "78%" },
+    ],
+    items: [
+      { title: "Two Sum", meta: "Easy · Arrays", desc: "Classic — find indices that sum to target.", tag: "Solved" },
+      { title: "Longest Substring Without Repeating", meta: "Medium · Sliding Window", desc: "Track seen characters with a moving window.", tag: "Recommended" },
+      { title: "Group Anagrams", meta: "Medium · Hashing", desc: "Bucket by sorted key or character signature.", tag: "New" },
+      { title: "Course Schedule", meta: "Medium · Graphs", desc: "Cycle detection on a directed graph.", tag: "Stretch" },
+      { title: "Word Ladder", meta: "Hard · BFS", desc: "Shortest transformation between words.", tag: "Challenge" },
+      { title: "LRU Cache", meta: "Medium · Design", desc: "HashMap + doubly linked list in O(1).", tag: "Interview" },
+    ],
+    cta: "Start daily problem",
+  },
+  contests: {
+    eyebrow: "Monthly arena",
+    title: "Contests",
+    subtitle: "Compete monthly. Top 3 win real merch, free credits, and a public verifiable badge.",
+    Icon: Trophy,
+    stats: [
+      { label: "Your rank", value: "#142" },
+      { label: "XP this month", value: "2,340" },
+      { label: "Time to next", value: "9d 04h" },
+    ],
+    items: [
+      { title: "May Code Sprint", meta: "Live · 4 problems", desc: "60-minute weekly sprint. Climb the global board.", tag: "Live" },
+      { title: "Algorithms Marathon", meta: "Monthly · 8 problems", desc: "Three hours, three difficulty tiers. Top 3 win merch.", tag: "Featured" },
+      { title: "DSA Survivor", meta: "Knockout · 6 rounds", desc: "Wrong answer = eliminated. Last standing wins.", tag: "Bracket" },
+      { title: "Frontend Build-off", meta: "Weekend · 24h", desc: "Ship a live UI from a brief. Community votes.", tag: "Open" },
+      { title: "SQL Showdown", meta: "Friday night · 1h", desc: "Real datasets, real queries, real time.", tag: "Weekly" },
+      { title: "Interview Gauntlet", meta: "Premium · 90 min", desc: "Curated by company. Practice the actual bar.", tag: "Premium" },
+    ],
+    cta: "Enter live contest",
+  },
+  notes: {
+    eyebrow: "Smart revision",
+    title: "Notes",
+    subtitle: "Drop a PDF or pick a topic — we generate revision-ready notes and flow diagrams.",
+    Icon: FileText,
+    stats: [
+      { label: "Notebooks", value: "14" },
+      { label: "Generated this week", value: "6" },
+      { label: "Pages indexed", value: "428" },
+    ],
+    items: [
+      { title: "Operating Systems — Processes", meta: "From PDF · 24 pages", desc: "Auto-summarized with a process state flow diagram.", progress: 100, tag: "Ready" },
+      { title: "DBMS — Normalization", meta: "Generated · 12 pages", desc: "1NF → BCNF with worked examples.", progress: 100, tag: "Ready" },
+      { title: "Computer Networks — TCP", meta: "From PDF · 31 pages", desc: "Handshake, congestion control, and a packet-flow map.", progress: 80, tag: "Generating" },
+      { title: "OOP — SOLID Principles", meta: "Generated · 8 pages", desc: "Each principle with a refactor before/after.", progress: 100, tag: "Ready" },
+      { title: "Graphs — Traversals Cheatsheet", meta: "Auto · 4 pages", desc: "BFS vs DFS decision tree and complexity table.", progress: 100, tag: "Ready" },
+      { title: "Upload PDF", meta: "Drop a file", desc: "Convert any textbook chapter into structured notes.", tag: "New" },
+    ],
+    cta: "Generate notes from PDF",
+  },
+  lab: {
+    eyebrow: "Live environments",
+    title: "Real-Time Lab",
+    subtitle: "Real datasets, real services, real logic — practice on problems that actually exist.",
+    Icon: FlaskConical,
+    stats: [
+      { label: "Active labs", value: "8" },
+      { label: "Datasets", value: "22" },
+      { label: "Compute", value: "On-demand" },
+    ],
+    items: [
+      { title: "Build a URL Shortener", meta: "Lab · 90 min", desc: "Design, store, and benchmark a real service.", tag: "Hot" },
+      { title: "Recommend Movies (MovieLens)", meta: "Dataset · 25M ratings", desc: "Collaborative filtering on a real-world set.", tag: "Dataset" },
+      { title: "Rate-Limit a Live API", meta: "Lab · 60 min", desc: "Token bucket vs leaky bucket — measure both.", tag: "Systems" },
+      { title: "SQL on NYC Taxi Data", meta: "Dataset · 1.5B rows", desc: "Window functions where they actually matter.", tag: "Big data" },
+      { title: "Mini Search Engine", meta: "Lab · 2h", desc: "Inverted index, TF-IDF, and a tiny ranker.", tag: "Build" },
+      { title: "Stream Processing Sandbox", meta: "Lab · 90 min", desc: "Tumbling vs sliding windows on a live feed.", tag: "Premium" },
+    ],
+    cta: "Spin up a lab",
+  },
+  tutor: {
+    eyebrow: "Always-on guide",
+    title: "AI Tutor",
+    subtitle: "A patient tutor that teaches your gaps in your words — Socratic when you want depth.",
+    Icon: GraduationCap,
+    stats: [
+      { label: "Sessions", value: "32" },
+      { label: "Concepts unlocked", value: "47" },
+      { label: "Avg session", value: "11 min" },
+    ],
+    items: [
+      { title: "Explain dynamic programming like I'm 12", meta: "Conversation", desc: "Plain-language analogies grounded in your level.", tag: "Recent" },
+      { title: "Debug my recursion", meta: "Code review", desc: "Paste code — get a step-by-step trace, not a fix.", tag: "Tool" },
+      { title: "Socratic mode: graphs", meta: "Guided questions", desc: "Learn by being asked the right questions.", tag: "Socratic" },
+      { title: "Mock interview: arrays", meta: "30 min", desc: "Realistic pacing, hints only when you ask.", tag: "Premium" },
+      { title: "Concept of the day: invariants", meta: "Daily 5 min", desc: "One sharp idea, one tiny exercise.", tag: "Daily" },
+      { title: "Roadmap review", meta: "Reflection", desc: "Tutor reviews your week and adjusts the path.", tag: "Weekly" },
+    ],
+    cta: "Start a session",
+  },
+};
+
+function SectionView({ id, name, onBack }: { id: string; name: string; onBack: () => void }) {
+  const data = SECTIONS[id];
+  if (!data) {
+    return (
+      <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
+        <p className="text-sm text-muted-foreground">Coming soon.</p>
+        <Button variant="outline" className="mt-4 rounded-full" onClick={onBack}>
+          Back to overview
+        </Button>
+      </div>
+    );
+  }
+  const Icon = data.Icon;
+  return (
+    <div className="space-y-8">
+      <button
+        onClick={onBack}
+        className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ChevronRight className="h-3 w-3 rotate-180" />
+        Overview
+      </button>
+
+      <section className="rounded-2xl border border-border bg-card p-6 shadow-soft md:p-8">
+        <div className="flex flex-wrap items-start justify-between gap-6">
+          <div className="flex items-start gap-4">
+            <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <Icon className="h-6 w-6" />
+            </div>
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{data.eyebrow}</p>
+              <h1 className="mt-1 text-3xl font-semibold tracking-tight md:text-4xl">{data.title}</h1>
+              <p className="mt-2 max-w-2xl text-sm text-muted-foreground md:text-base">{data.subtitle}</p>
+            </div>
+          </div>
+          <Button className="rounded-full">
+            {data.cta}
+            <ChevronRight className="ml-1 h-4 w-4" />
+          </Button>
+        </div>
+
+        <div className="mt-8 grid grid-cols-3 gap-4 border-t border-border/60 pt-6">
+          {data.stats.map((s) => (
+            <div key={s.label}>
+              <p className="text-xs text-muted-foreground">{s.label}</p>
+              <p className="mt-1 text-xl font-semibold tracking-tight">{s.value}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">For {name}</p>
+        <h2 className="mt-1 text-2xl font-semibold tracking-tight md:text-3xl">Curated for you</h2>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {data.items.map((item) => (
+            <div
+              key={item.title}
+              className="group flex flex-col rounded-2xl border border-border bg-card p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-elevated"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
+                  {item.meta}
+                </p>
+                {item.tag && (
+                  <span className="rounded-full border border-border bg-background px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+                    {item.tag}
+                  </span>
+                )}
+              </div>
+              <h3 className="mt-3 text-base font-semibold tracking-tight">{item.title}</h3>
+              <p className="mt-1 text-sm text-muted-foreground">{item.desc}</p>
+
+              {typeof item.progress === "number" ? (
+                <div className="mt-4">
+                  <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+                    <span>Progress</span>
+                    <span className="font-medium text-foreground">{item.progress}%</span>
+                  </div>
+                  <div className="mt-1.5 h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                    <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${item.progress}%` }} />
+                  </div>
+                </div>
+              ) : (
+                <div className="mt-4 inline-flex items-center text-xs font-medium text-primary opacity-0 transition-opacity group-hover:opacity-100">
+                  Open <ChevronRight className="ml-0.5 h-3 w-3" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  );
+}
