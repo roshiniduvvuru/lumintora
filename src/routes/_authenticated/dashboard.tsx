@@ -546,6 +546,8 @@ const SECTIONS: Record<string, SectionData> = {
 
 function SectionView({ id, name, onBack }: { id: string; name: string; onBack: () => void }) {
   const data = SECTIONS[id];
+  const [openItem, setOpenItem] = useState<null | (typeof data)["items"][number]>(null);
+
   if (!data) {
     return (
       <div className="rounded-2xl border border-border bg-card p-8 text-center shadow-soft">
@@ -557,6 +559,12 @@ function SectionView({ id, name, onBack }: { id: string; name: string; onBack: (
     );
   }
   const Icon = data.Icon;
+
+  const ctaTarget =
+    data.items.find((i) => typeof i.progress === "number" && i.progress > 0 && i.progress < 100) ??
+    data.items.find((i) => ["Recommended", "Live", "Hot", "Daily"].includes(i.tag ?? "")) ??
+    data.items[0];
+
   return (
     <div className="space-y-8">
       <button
@@ -579,7 +587,7 @@ function SectionView({ id, name, onBack }: { id: string; name: string; onBack: (
               <p className="mt-2 max-w-2xl text-sm text-muted-foreground md:text-base">{data.subtitle}</p>
             </div>
           </div>
-          <Button className="rounded-full">
+          <Button className="rounded-full" onClick={() => setOpenItem(ctaTarget)}>
             {data.cta}
             <ChevronRight className="ml-1 h-4 w-4" />
           </Button>
@@ -600,9 +608,10 @@ function SectionView({ id, name, onBack }: { id: string; name: string; onBack: (
         <h2 className="mt-1 text-2xl font-semibold tracking-tight md:text-3xl">Curated for you</h2>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {data.items.map((item) => (
-            <div
+            <button
               key={item.title}
-              className="group flex flex-col rounded-2xl border border-border bg-card p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-elevated"
+              onClick={() => setOpenItem(item)}
+              className="group flex flex-col rounded-2xl border border-border bg-card p-5 text-left shadow-soft transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-elevated"
             >
               <div className="flex items-start justify-between gap-3">
                 <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
@@ -632,10 +641,155 @@ function SectionView({ id, name, onBack }: { id: string; name: string; onBack: (
                   Open <ChevronRight className="ml-0.5 h-3 w-3" />
                 </div>
               )}
-            </div>
+            </button>
           ))}
         </div>
       </section>
+
+      {openItem && (
+        <ItemPlayer sectionId={id} item={openItem} onClose={() => setOpenItem(null)} />
+      )}
     </div>
   );
+}
+
+type Step = { title: string; body: string; code?: string };
+
+function ItemPlayer({
+  sectionId,
+  item,
+  onClose,
+}: {
+  sectionId: string;
+  item: { title: string; meta: string; desc: string; progress?: number; tag?: string };
+  onClose: () => void;
+}) {
+  const steps = getSteps(sectionId, item);
+  const [stepIdx, setStepIdx] = useState(0);
+  const step = steps[stepIdx];
+  const isLast = stepIdx === steps.length - 1;
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-background/70 p-4 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <div
+        className="relative flex max-h-[88vh] w-full max-w-2xl flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-elevated"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <header className="flex items-start justify-between gap-4 border-b border-border/60 px-6 py-5">
+          <div className="min-w-0">
+            <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+              {item.meta}
+            </p>
+            <h3 className="mt-1 truncate text-lg font-semibold tracking-tight">{item.title}</h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="rounded-full border border-border bg-background px-3 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Close
+          </button>
+        </header>
+
+        <div className="flex-1 overflow-y-auto px-6 py-6">
+          <div className="mb-4 flex items-center gap-3 text-[11px] uppercase tracking-wider text-muted-foreground">
+            <span>Step {stepIdx + 1} of {steps.length}</span>
+            <div className="h-1 flex-1 overflow-hidden rounded-full bg-muted">
+              <div
+                className="h-full rounded-full bg-primary transition-all"
+                style={{ width: `${((stepIdx + 1) / steps.length) * 100}%` }}
+              />
+            </div>
+          </div>
+          <h4 className="text-base font-semibold tracking-tight">{step.title}</h4>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{step.body}</p>
+          {step.code && (
+            <pre className="mt-4 overflow-x-auto rounded-lg border border-border bg-muted/50 p-4 text-xs leading-relaxed">
+              <code>{step.code}</code>
+            </pre>
+          )}
+        </div>
+
+        <footer className="flex items-center justify-between gap-3 border-t border-border/60 px-6 py-4">
+          <Button
+            variant="outline"
+            className="rounded-full"
+            onClick={() => setStepIdx((i) => Math.max(0, i - 1))}
+            disabled={stepIdx === 0}
+          >
+            Back
+          </Button>
+          <Button
+            className="rounded-full"
+            onClick={() => (isLast ? onClose() : setStepIdx((i) => i + 1))}
+          >
+            {isLast ? "Finish" : "Next"}
+            <ChevronRight className="ml-1 h-4 w-4" />
+          </Button>
+        </footer>
+      </div>
+    </div>
+  );
+}
+
+function getSteps(
+  sectionId: string,
+  item: { title: string; desc: string },
+): Step[] {
+  const t = item.title;
+  if (sectionId === "practice") {
+    return [
+      { title: "Understand the problem", body: `${t} — read the constraints carefully. Identify inputs, outputs, and edge cases before writing code.` },
+      {
+        title: "Sketch a brute-force approach",
+        body: "Get something correct first. Don't optimize prematurely — clarity before speed.",
+        code: "for (let i = 0; i < n; i++) {\n  for (let j = i + 1; j < n; j++) {\n    // check condition\n  }\n}",
+      },
+      {
+        title: "Optimize",
+        body: "Look for repeated work. A hash map, two pointers, or a sliding window often collapses the inner loop.",
+        code: "const seen = new Map();\nfor (let i = 0; i < nums.length; i++) {\n  const need = target - nums[i];\n  if (seen.has(need)) return [seen.get(need), i];\n  seen.set(nums[i], i);\n}",
+      },
+      { title: "Test & submit", body: "Walk through 2–3 inputs by hand: empty, single element, and a tricky case. Then submit." },
+    ];
+  }
+  if (sectionId === "path") {
+    return [
+      { title: "Module overview", body: `${t} — here's what you'll master and why it matters in real interviews and systems.` },
+      { title: "Core concept", body: "Learn the underlying mental model — not just syntax. We'll show one canonical example end-to-end." },
+      { title: "Guided practice", body: "Three short problems applying the concept. Hints unlock progressively if you get stuck." },
+      { title: "Checkpoint quiz", body: "Five adaptive questions. Pass to unlock the next module — fail and we'll reteach the gap." },
+    ];
+  }
+  if (sectionId === "contests") {
+    return [
+      { title: "Rules", body: `${t} — timed contest. No external help. Partial credit for partial solutions.` },
+      { title: "Warm-up problem", body: "An easy problem to calibrate. Solve it to enter the live arena." },
+      { title: "Live arena", body: "You're in. Climb the leaderboard — your rank updates in real time." },
+    ];
+  }
+  if (sectionId === "notes") {
+    return [
+      { title: "Source", body: `${t} — we'll extract structure: headings, definitions, and worked examples.` },
+      { title: "Summary", body: "Concise revision notes generated, indexed, and searchable. Flow diagrams attached where useful." },
+      { title: "Quiz yourself", body: "We auto-generate flashcards from the notes so you can test recall in 5 minutes." },
+    ];
+  }
+  if (sectionId === "lab") {
+    return [
+      { title: "Brief", body: `${t} — real environment, real data. Here's the goal and success criteria.` },
+      { title: "Spin up", body: "We provision an isolated sandbox with the dataset and tools pre-loaded — usually under 30 seconds." },
+      { title: "Build", body: "Iterate freely. Run, measure, and compare your approach against a reference solution." },
+    ];
+  }
+  if (sectionId === "tutor") {
+    return [
+      { title: "Tell the tutor your goal", body: `${t} — share what you want to understand or where you're stuck.` },
+      { title: "Socratic exchange", body: "The tutor asks targeted questions to surface your gaps, then explains in your words." },
+      { title: "Reinforce", body: "A tiny exercise to lock it in. The tutor adapts your roadmap based on what you just learned." },
+    ];
+  }
+  return [{ title: t, body: item.desc }];
 }
