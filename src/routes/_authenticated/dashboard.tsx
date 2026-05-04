@@ -216,11 +216,11 @@ function Dashboard() {
               </p>
 
               <div className="mt-6 flex flex-wrap gap-3">
-                <Button className="rounded-full">
+                <Button className="rounded-full" onClick={() => setActive("practice")}>
                   Resume learning
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
-                <Button variant="outline" className="rounded-full">
+                <Button variant="outline" className="rounded-full" onClick={() => setActive("path")}>
                   Browse path
                 </Button>
               </div>
