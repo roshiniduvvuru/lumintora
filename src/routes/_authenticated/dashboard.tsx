@@ -249,50 +249,17 @@ function Dashboard() {
             </div>
           </section>
 
-          {/* Core features */}
+          {/* Active modules */}
           <section className="mt-10">
             <SectionHeader
-              eyebrow="Version v1 · Core"
-              title="Lumintora Core"
-              subtitle="The full adaptive learning experience — free, forever."
-              badge={<Badge variant="secondary" className="rounded-full">Free</Badge>}
+              eyebrow="Your modules"
+              title="Continue where you left off"
+              subtitle="Adaptive lessons, practice, and tools tuned to your goal."
             />
             <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {CORE_FEATURES.map((f) => (
                 <FeatureCard key={f.title} feature={f} />
               ))}
-            </div>
-          </section>
-
-          {/* Premium features */}
-          <section className="mt-12">
-            <SectionHeader
-              eyebrow="Version v1 · Premium"
-              title="Lumintora Premium"
-              subtitle="Everything in Core, plus interview-grade depth, real environments, and a personal AI tutor."
-              badge={
-                <Badge className="rounded-full bg-primary/10 text-primary hover:bg-primary/20">
-                  Premium
-                </Badge>
-              }
-            />
-            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {PREMIUM_FEATURES.map((f) => (
-                <FeatureCard key={f.title} feature={f} premium />
-              ))}
-            </div>
-
-            <div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl border border-border bg-gradient-to-br from-accent/40 to-card p-6 sm:flex-row sm:items-center md:p-8">
-              <div>
-                <h3 className="text-lg font-semibold tracking-tight">Unlock Lumintora Premium</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Real environments, AI mock interviews, and a personal tutor — built for offers, not just learning.
-                </p>
-              </div>
-              <Button className="rounded-full">
-                Upgrade
-                <ChevronRight className="ml-1 h-4 w-4" />
-              </Button>
             </div>
           </section>
 
